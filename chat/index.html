@@ -1,0 +1,68 @@
+        <script src="/resource/js/eruda.js"></script>
+        <script>eruda.init();</script>
+
+
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="mdui/css/mdui.min.css">
+        <link rel="stylesheet" href="/resource/css/before.css">
+        <link rel="stylesheet" href="/resource/css/chat.css">
+        <script src="/resource/js/functions.js"></script>
+    	<meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <title>讨论交流 - ZVR神坑工作室</title>
+    </head>
+    <body style="background: var(--backgroundColor)">
+        <div class="goComeZZ">
+            <div style="position: relative;top: 30%;">
+                <img style="position: relative;left: 25%;" width="50%" src="/resource/icons/sk.png" alt="" />
+            </div>
+        </div>
+        <div class="hint">
+            <span>
+                <img class="iii1" onclick="history.back()" src="/resource/icons/back.png" alt="" />
+            </span>
+           
+           
+            <span class="tx">消息 等有机会在做</span>
+            <span>
+                <img style="visibility: hidden;position: absolute;right: 5px;top: 12.5px;" src="/resource/icons/back.png" alt="" />
+            </span>
+        </div>
+        
+        <ul id="chatList" class="mdui-list"></ul>
+        
+
+
+
+    
+        <div id="chat_a" class="chat_commento">
+            <!-- top -->
+            <div onclick="$('#chat_a').stop();outChat();" id="ctt" class="chat_top">
+                聊天
+            </div>
+            <!-- line -->
+            <div class="line"></div>
+            <!-- middle -->
+            <div class="chat_middle" id="chat_middle_item">
+                 <!-- 左边 -->
+            </div>
+            <!-- line -->
+            <div class="line"></div>
+            <!-- foot -->
+            <div class="chat_foot">
+                <!-- context -->
+                <textarea class="chat_context chat_context_item" id="info" placeholder="请输入内容"></textarea>
+                <button onclick="dd()" class="chat_commit" id="button">发送</button>
+                <!--  class="chat_commit" id="button" -->
+            </div>
+        </div>
+        
+        <script src="mdui/js/mdui.min.js"></script>
+        <script src="/resource/js/jquery.min.js"></script>
+        <script src="/resource/js/bzw.js"></script>
+        <script src="/resource/js/chat.js"></script>
+        <script src="/resource/js/Bottom-navigation-bar.php?1"></script>
+    </body>
+</html>

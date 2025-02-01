@@ -1,0 +1,21 @@
+.navigation{
+    list-style-type: none;
+}
+#Top-navigation-bar li{
+    float: left;
+    width: calc(100% / 6);
+    text-align: center;
+    background-color: var(--whiteColor);
+    line-height: 5.5vh;
+    font-size: 2vh;
+}
+
+
+.navigation .active{
+    color: var(--themeColor);
+    border-bottom: 2px solid var(--themeColor);
+}
+.navigation .other{
+    color: grey;
+    border-bottom: 2px solid var(--whiteColor);
+}

@@ -1,0 +1,106 @@
+#z0{
+    width: 100%;
+    position: absolute;
+    height: 20%;
+    font-size: 17.5px;
+    background-color: var(--themeColor);
+    color: var(--whiteColor);
+    z-index: 0;
+}
+#z0 span{
+    position: fixed;
+    left: 30px;
+    top: calc(7.5% - 4px);
+    line-height: 8px;
+}
+
+#z1{
+    width: 100%;
+    position: absolute;
+    top: 15%;
+    height: 80%;
+    background-color: var(--whiteColor);
+    z-index: 1;
+    border-radius: 20px;
+}
+.otitle{
+    width: 100%;
+}
+.iii{
+    width: 50%;
+    line-height: 60px;
+    display: block;
+    float: left;
+    text-align: center;
+}
+.oinput{
+    width: 100%;
+}
+.oinput input{
+    text-indent: 10px;
+    border: none;
+    background-color: #f5f5f5;
+    width: 85%;
+    height: 40px;
+    border-radius: 5px;
+    position: relative;
+    left: 7.5%;
+    outline: none;
+}
+.activety{
+    color: var(--themeColor);
+}
+
+#ipassword{
+    top: 12.5px;
+}
+#ipassword2{
+    top: 25px;
+}
+#submitiess{
+    border: none;
+    position: relative;
+    top: 50px;
+    background-color: var(--themeColor);
+    width: 85%;
+    left: 7.5%;
+    height: 38px;
+    border-radius: 5px;
+    color: var(--whiteColor);
+}
+
+#thirdLogin{
+    position: relative;
+    top: 75px;
+    width: 100%;
+    text-align: center;
+    font-size: 12.5px;
+    color: #999999;
+}
+#weibo{
+    width: 30px;
+    height: 30px;
+    
+    position: relative;
+    right: 25;
+}
+#wechat{
+    width: 30px;
+    height: 30px;
+    
+    right: 12.5;
+}
+#baidu{
+    width: 30px;
+    height: 30px;
+    
+    position: relative;
+    left: 12.5;
+}
+#qq{
+    width: 30px;
+    height: 30px;
+    
+    position: relative;
+    left: 25;
+}

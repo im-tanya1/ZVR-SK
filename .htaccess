@@ -1,0 +1,6 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+    RewriteCond %{REQUEST_URI} ^/controls/datail/([0-9]+)\.html$ [NC]
+    RewriteRule ^controls/datail/([0-9]+)\.html$ controls/datail/index.php?$1 [L,QSA]
+</IfModule>

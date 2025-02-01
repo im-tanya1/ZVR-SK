@@ -1,0 +1,80 @@
+.navigation{
+    list-style-type: none;
+}
+#Top-navigation-bar li{
+    float: left;
+    width: 25%;
+    text-align: center;
+    background-color: var(--whiteColor);
+    line-height: 5.5vh;
+    font-size: 2vh;
+}
+
+
+.navigation .active{
+    color: var(--themeColor);
+    border-bottom: 2px solid var(--themeColor);
+}
+.navigation .other{
+    color: grey;
+    border-bottom: 2px solid var(--whiteColor);
+}
+
+#tpzs{
+    position: absolute;
+    width: 100%;
+    z-index: -1;
+    left: 0;
+}
+#tpq{
+    text-align: center;
+    z-index: 1;
+}
+
+#tcdl{
+    border-radius: 5px;
+    width: 90%;
+    position: relative;
+    left: 5%;
+    line-height: 45px;
+    color: white;
+    text-align: center;
+    background-color: #BC0004;
+}
+#txi{
+    border-radius: 50%;
+    border: grey solid 1px;
+}
+
+.imgc{
+    width: 100%;
+    box-sizing: border-box;
+    break-inside: avoid;
+    padding: 10px;
+}
+#fun2{
+    column-count: 2;
+    column-gap: 0;
+    position: absolute;
+    left: 0;
+}
+
+
+.a2{
+    margin-bottom: 15px;
+    width: 84%;
+    border-radius: 5px;
+    border: grey solid 1px;
+    box-shadow: grey 2px 3px;
+    padding: 3%;
+    position: relative;
+    left: 5%;
+    overflow: hidden;
+}
+
+.a2 div div{
+    display: block;
+    float: left;
+    text-align: center;
+    width: 25%;
+}

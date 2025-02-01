@@ -1,0 +1,49 @@
+        <script src="/resource/js/eruda.js"></script>
+        <script>eruda.init();</script>
+
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>文件上传</title>
+	<meta charset="utf-8">
+</head>
+<body>
+
+
+	<input type="file" name="file" multiple id="file" onchange="createFile()">
+
+	<button onclick="upload()">提交</button>
+
+<script type="text/javascript" src="/resource/js/jquery.min.js/jquery.min.js"></script>
+<script type="text/javascript">
+	var files;
+	function createFile(){
+		var el = document.getElementById('file')
+		files = el.files;
+		console.log(files);
+	}
+	function upload(){
+		var obj = new FormData()
+		for(var i=0;i<files.length;i++){
+				obj.append('files[]',files[i]);
+		}
+		$.ajax({
+			url:'1.php',
+			type:'post',
+			data:obj,
+			contentType: false,  
+          	processData: false,
+			success:function(response){
+					console.log(response)
+			},
+			error:function(){
+				alert("未知的错误发生勒")
+			}
+
+		})
+	}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,162 @@
+        <script src="/resource/js/eruda.js"></script>
+        <script>eruda.init();</script>
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <style type="text/css" media="all">
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+@media screen and (min-width: 480px) {
+            /*
+    电脑
+*/
+            #file {
+                position: relative;
+                left: 0%;
+                border: none;
+            }
+
+            .wzsy {
+                margin: 5%;
+                padding: 1%;
+                text-align: center;
+                border: 0.5px solid grey;
+                border-radius: 5px;
+                width: 75%;
+                position: relative;
+                left: 7.5%;
+                box-shadow: 2px 2px 4px grey;
+            }
+
+            button {
+                width: 40%;
+                height: 5%;
+                text-align: center;
+                border: 0px;
+                transition-duration: 0.4s;
+                box-shadow: 2px 4px 4px rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+            }
+
+            button:hover {
+                background-color: #4CAF50;
+                color: white;
+            }
+
+            #image-preview {
+                width: 40%;
+                background-size: contain;
+                background-repeat: no-repeat;
+                background-position: center center;
+            }
+        }
+
+@media screen and (max-width: 480px) {
+            /*
+    手机
+*/
+            .wzsy {
+                margin: 5%;
+                padding: 5%;
+                text-align: center;
+                border: 0.5px solid grey;
+                border-radius: 5px;
+                box-shadow: 2px 2px 4px grey;
+            }
+
+            button {
+                width: 80%;
+                height: 5%;
+                text-align: center;
+                border: 0px;
+                transition-duration: 0.4s;
+                box-shadow: 2px 4px 4px rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+            }
+
+            button:hover {
+                background-color: #4CAF50;
+                color: white;
+            }
+
+            #image-preview {
+                width: 75%;
+                background-size: contain;
+                background-repeat: no-repeat;
+                background-position: center center;
+            }
+        }
+
+        img {
+            box-shadow: 4px 4px 4px grey;
+        }
+
+        .aaaaa {
+            position: absolute;
+            left: 18%;
+        }
+    </style>
+    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>上传文件</title>
+</head>
+<body>
+    <noscript style="z-index:99;position:fixed;top:0%;width:100%;background-color:white;height:100%">
+        <article style="position:fixed;top:50%;text-align:center;width:100%;">
+            网站依赖于javascript<br />
+            请开启javascript
+        </article>
+    </noscript>
+
+    <div class="wzsy" id="up">
+        <b>上传文件</b><br><br>
+    	<input type="file" name="file" multiple id="file" onchange="createFile()">
+
+	    <button onclick="upload()">提交</button><br><br>
+            <!-- <img id="image-preview"> -->
+    </div>
+    
+    <div class="wzsy" id="up">
+        <b>查询文件</b><br><br>
+        <form target="_blank" action="search.php" method="get">
+            <input id="upp" name="file" placeholder="请输入文件编号" type="text">
+            <br><br>
+            <button type="submit">查询</button><br><br>
+            <!-- <img id="image-preview"> -->
+        </form>
+    </div>
+    
+    <script src="/resource/js/jquery.min.js"></script>
+    <script>
+	var files;
+	function createFile(){
+		var el = document.getElementById('file')
+		files = el.files;
+		console.log(files);
+	}
+	function upload(){
+		var obj = new FormData()
+		obj.append('files',files[0]);
+		$.ajax({
+			url:'up.php',
+			type:'post',
+			data:obj,
+			contentType: false,  
+          	processData: false,
+			success:function(response){
+					console.log(response)
+			},
+			error:function(){
+				alert("未知的错误发生勒")
+			}
+
+		})
+	}
+
+
+    </script>
+</body>
+</html

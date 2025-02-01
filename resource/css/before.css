@@ -1,0 +1,57 @@
+:root{
+    --whiteColor: #ffffff;
+    --blackColor: #000000;
+    --themeColor: #2c7ace;
+    --backgroundColor: #eeeeee;
+    /* #2c7ace */
+}
+@font-face {
+    font-family: "Fos";
+    src: url("/resource/css/font.ttf");
+}
+*{
+    user-select: none;
+    font-family: 'Fos',sans-serif;
+}
+html{
+    background-color: var(--backgroundColor);
+}
+input:focus{outline:none;}
+button:focus{outline:none;}
+
+.interval{
+    width: 100%;
+    height: 2%;
+    background-color: var(--backgroundColor);
+}
+
+.hint{
+    background-color: var(--themeColor);
+    color: var(--whiteColor);
+    line-height: 7.5vh;
+    height: 7.5vh;
+    text-align: center;
+    font-size: 17px;
+    z-index: 3;
+}
+.hint .tx{
+    font-size: 2.4vh;
+}
+.iii1{
+    position: absolute;
+    left: 2.5vw;
+    top: 1.25vh;
+    width: 5vh;
+}
+
+
+.goComeZZ{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--backgroundColor);
+    color: var(--blackColor);
+    z-index: 3;
+}

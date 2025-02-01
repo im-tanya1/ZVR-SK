@@ -1,0 +1,103 @@
+.wz{
+    background-color: var(--whiteColor);
+    padding: 2vh;
+    user-select: text;
+}
+.wz *{
+    user-select: text;
+}
+.wzinfo{
+    line-height: 2.5vh;
+}
+.hhed{
+    border-radius: 50%;
+    width: 5vh;
+    float: left;
+    margin-top: 0;
+    margin-right: 2%;
+}
+.autherBox{
+    display: block;
+    width: 100%;
+    padding-top: 0.38%;
+}
+.auther{
+    position: relative;
+    left: -1px;
+    font-size: 2vh;
+    color: var(--blackColor);
+}
+.dater{
+    position: relative;
+    font-size: 1.8vh;
+    color: grey;
+}
+
+.wztitle{
+    margin-top: 0.8vh;
+    margin-bottom: 1vh;
+    font-size: 2.5vh;
+}
+.wznr{
+    color: grey;
+    font-size: 1.9vh;
+    
+    max-height: 28vh;
+    display:-webkit-box;
+    -webkit-box-orient: vertical;
+    line-clamp: 7;
+    -webkit-line-clamp: 7;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#nr2{
+    max-height: initial;
+    line-clamp:initial;
+    -webkit-line-clamp:initial;
+    overflow: initial;
+    text-overflow: initial;
+}
+
+.wzht{
+    font-size: 1.4vh;
+    color: #cccccc;
+}
+.wzht div img{
+    width: 2vh;
+    float: left;
+}
+.wzht div span{
+    float: left;
+    margin-left: 3px;
+    overflow: hiddden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.wzht div{
+    background-color: #f3f3f3;
+    padding: 1.5%;
+    border-radius: 5px;
+    width: 7.5vh;
+    float: left;
+    margin-right: 2%;
+    position: relative;
+    top: -0.667vh;
+}
+.wzht .ht{
+    float: right;
+    color: var(--themeColor);
+    border-radius: none;
+    position: relative;
+    font-size: 1.75vh;
+}
+.wznr img{
+    border-radius: 0%;
+    width: 100%;
+}
+
+.iner{
+    width: 100%;
+    height: 1vh;
+    display: block;
+}
