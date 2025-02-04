@@ -14,7 +14,7 @@
         <script src="/resource/js/functions.js"></script>
     	<meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <?php
-    include '../../com_yc.php';
+    include '../../common.php';
      
     $conn = new mysqli($servername, $username, $password, $dbname);
     if ($conn->connect_error) {

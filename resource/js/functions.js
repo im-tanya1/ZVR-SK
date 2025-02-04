@@ -15,6 +15,7 @@ window.addEventListener("load", function() {
     }, 500);
 })
 
+/*
 function stopEvent(el,event){
     this.pd = true
     el['on' + event] = () => {
@@ -41,7 +42,18 @@ function stopSleep2(time){
         console.timeEnd('sleep')
     }
 }
-const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
+const sleep = (delay) => new Promise((resolve) => void setTimeout(resolve, delay));
+*/
+
+function sleep(times){
+    const startTime = Date.now()
+    while(1){
+        if (Date.now() - startTime >= times) {
+            break;
+        }
+    }
+    return true;
+}
 
 function uploadError(){
     

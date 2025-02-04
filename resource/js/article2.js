@@ -131,7 +131,7 @@ const nrt = nrz.innerHTML.length / 300
 const nrt2 = Math.ceil(nrt)
 const nrt3 = Math.round(nrt)
 var nrt4
-if (nrt2 !== nrt3) {
+if (nrt2 !== nrt3 && nrt2 < 5) {
     nrt4 = '小于' +  nrt2
 }
 else{

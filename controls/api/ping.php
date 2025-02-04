@@ -51,16 +51,4 @@
         }';
     }
     mysqli_close($conn);
-    
-    /*
-        $.ajax({
-          method: "post",
-          url: "/controls/api/ping.php",
-          data: {
-            uid: "1",
-            content: "哈喽哈",
-            belong: "1"
-          }
-        })
-    */
 ?>
