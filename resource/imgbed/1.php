@@ -1,4 +1,6 @@
 <?php
+    die("该接口暂时停用");
+
     $files = $_FILES['file'];
     $iii = 0;
     $list = scandir('./img/');
@@ -9,14 +11,7 @@
         }
     }
     $name = $iii.".".array_pop(explode(".",$files['name']));
-    /*
-    if(!in_array($explode(".",$files['name'][0])[1], array('jpg','jpeg','webp','png'))){
-        die('{
-            "code": "500"
-        }');
-    }
-    */
-    
+
     $upload_path = "img/"; 
     if(move_uploaded_file($files['tmp_name'],$upload_path.$name)){
       echo '{

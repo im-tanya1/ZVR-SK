@@ -30,6 +30,7 @@ submitiess.onclick = function () {
     function regg(n,p){
         $.ajax({
             url:"/user/api/register.php",
+            method: "post",
             data: {
                 name: n,
                 password: md5(p),

@@ -9,7 +9,8 @@
         <?php 
             $eb1 = $_SERVER['QUERY_STRING'];
             $err = explode(',', $eb1)[0];
-            $url = explode(',', $eb1)[1];
+            // $url = explode(',', $eb1)[1];
+            $url = "未知路径"
         ?>
         <title>错误<?php echo $err;?> - ZVR神坑工作室</title>
     </head>
@@ -39,7 +40,7 @@
             <span style="color: var(--themeColor);">
                 <?php echo $err;?>
             </span>
-            错误码。根据此错误码，我们推断这通常是由于<span id="abj" style="color: var(--themeColor)"></span>。注意您的请求尚未成功！
+            错误码。根据此错误码，我们推断这通常是由于<span id="abj" style="color: var(--themeColor)"></span>。请稍后重试！
         </div>
         
         <div style="position: absolute;width: 100%;top: 50%;">

@@ -1,44 +1,39 @@
 <?php
-    include '../../common.php';
-    
-    $canvas = $_POST["address"];
-    $passwords = $_POST["title"];
-    $elmli = $_POST["elmi"];
-    $method = $_POST["content"];
-    $ip = $_POST["id"];
-    $wg = $_POST["wg"];
-    $wg2 = "";
-    if ($wg == "true") {
-        $wg2 = "存在违规字符";
-    }
-    else{
-        $wg2 = "无违规";
-    }
-    
-    $passwords = str_replace("'","\'",$passwords);
-    $method = str_replace("'","\'",$method);
-    
-    // 创建连接
-    $conn = mysqli_connect($servername, $username, $password, $dbname);
-    // 检测连接
-    if (!$conn) {
-        die("Connection failed: " . mysqli_connect_error());
-    }
-     
-    $sql = "INSERT INTO Passage (elmi, typeli, address, title, content, see, say, autherId, reg_date)
-    VALUES ('#page".$elmli."', '".$wg2."', '".$canvas."', '".$passwords."', '".$method."', 0, 0, ".$ip.", now())";
+include '../../common.php'; 
 
-    
-    if ($conn->query($sql) === TRUE) {
-        $last_id = mysqli_insert_id($conn);
-        echo '{
-            "code": "200",
-            "id": '.$last_id.'
-        }';
-    } else {
-        echo '{
-            "code": "500"
-        }';
-    }
-    mysqli_close($conn);
+if (!isset($_POST["address"], $_POST["title"], $_POST["elmi"], $_POST["content"], $_POST["id"], $_POST["wg"])) {
+    die(json_encode(array("code" => "400", "message" => "缺少必要的参数")));
+}
+
+$canvas = $_POST["address"];
+$title = $_POST["title"];
+$elmi = $_POST["elmi"];
+$content3 = $_POST["content"];
+$autherId = $_POST["id"]; 
+$wg = $_POST["wg"]; 
+
+$content2 = preg_replace('/<script>/', "", $content3);
+$content = preg_replace('/<\/script>/', "", $content2);
+
+$wgStatus = ($wg === "true") ? "存在违规字符" : "无违规";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+if ($conn->connect_error) {
+    die(json_encode(array("code" => "500", "message" => "数据库连接失败: " . $conn->connect_error)));
+}
+
+$stmt = $conn->prepare("INSERT INTO Passage (elmi, typeli, address, title, content, see, say, autherId, reg_date) VALUES (?, ?, ?, ?, ?, 0, 0, ?, NOW())");
+
+$elmiPrefix = "#page" . $elmi; 
+$stmt->bind_param("sssssi", $elmiPrefix, $wgStatus, $canvas, $title, $content, $autherId);
+
+if ($stmt->execute()) {
+    $last_id = $stmt->insert_id;
+    echo json_encode(array("code" => "200", "id" => $last_id));
+} else {
+    echo json_encode(array("code" => "500", "message" => "插入失败: " . $stmt->error));
+}
+
+$stmt->close();
+$conn->close();
 ?>
