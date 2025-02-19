@@ -14,99 +14,93 @@
         <script src="/resource/js/functions.js"></script>
     	<meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <?php
-    include '../../common.php';
-     
+include '../../common.php';
+
+// 设置默认值
+$title = "无法显示文章！";
+$pid = "0";
+$nr = "文章不存在";
+$ll = 1;
+$hf = 0;
+$date = "现在";
+$name = "官方";
+$head = "/resource/icons/gf.png";
+$ht = "官方";
+$autherID = null;
+$showAlert = false;
+
+try {
+    // 创建数据库连接
     $conn = new mysqli($servername, $username, $password, $dbname);
     if ($conn->connect_error) {
-        die("连接失败: " . $conn->connect_error);
-    } 
-    
-    function endWith($str, $suffix){   
-        $length = strlen($suffix);
-        if ($length == 0) {
-            return true;
-        }   
-        return (substr($str, -$length) === $suffix);
-    } 
-    
-    $pid = $_SERVER['QUERY_STRING'];
-    if(endWith($pid, '=')) {
-        $pid = substr($pid, 0, -1);
+        throw new Exception("连接失败: " . $conn->connect_error);
     }
 
-    $sql = "SELECT elmi, id, typeli, title, content, see, say,autherId, reg_date FROM Passage";
-    $result = $conn->query($sql);
-    
+    // 获取并验证PID
+    $pid = isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : '';
+
+    // 使用预处理语句防止SQL注入
+    $stmt = $conn->prepare("
+        SELECT 
+            p.elmi, p.id, p.typeli, p.title, p.content, 
+            p.see, p.say, p.autherId, p.reg_date,
+            u.name, u.head
+        FROM Passage p
+        LEFT JOIN UserList u ON p.autherId = u.uid
+        WHERE p.id = ?
+    ");
+    if (!$stmt) {
+        throw new Exception("数据库查询准备失败: " . $conn->error);
+    }
+
+    $stmt->bind_param("s", $pid);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
     if ($result->num_rows > 0) {
-        $GLOBALS['hhh'] = true;
-        while($row = $result->fetch_assoc()) {
-            if ($pid == $row['id']) {
-                if ($row["typeli"] !== "无违规") {
-                    if($row["typeli"] === "存在违规字符"){
-                        echo '
-                        <script>
-                        window.addEventListener("load", () => {
-                            alert("该文章可能存在违规字符")
-                        })
-                        </script>
-                        ';
-                    }
-                    else{
-                        $title = "无法显示文章！";
-                        $pid = "gf0";
-                        $nr = $row["typeli"];
-                        $ll = 1;
-                        $hf = 0;
-                        $date = "现在";
-                        
-                        $name = "官方";
-                        $head = "/resource/icons/gf.png";
-                        $ht = "官方";
-                        $GLOBALS['hhh'] = false;
-                        break;
-                    };
-                };
-                mysqli_query($conn,"UPDATE Passage SET see=see+1
-                WHERE id='".$pid."'");
-                
-                $title = $row["title"];
-                $pid = $row["id"];
-                $nr = $row["content"];
-                $ll = $row["see"] + 1;
-                $hf = $row["say"];
-                $date = $row["reg_date"];
-                $autherID = $row["autherId"];
-                $ht = "默认";
+        $row = $result->fetch_assoc();
 
-                $sql = "SELECT uid, name, head FROM UserList";
-                $result = $conn->query($sql);
-                if ($result->num_rows > 0) {
-                    // 输出数据
-                    while($row = $result->fetch_assoc()) {
-                        if ($row["uid"] == $autherID) {
-                            $name = $row["name"];
-                            $head = $row["head"];
-                        }
-                    }
-                }
-
-                $GLOBALS['hhh'] = false;
+        // 处理违规类型
+        if ($row["typeli"] !== "无违规") {
+            if ($row["typeli"] === "存在违规字符") {
+                $showAlert = true;
+            } else {
+                // 直接使用默认值显示违规信息
+                $nr = $row["typeli"];
+                $date = date("Y-m-d H:i:s");
+                $stmt->close();
+                $conn->close();
+                exit;
             }
         }
-        if($GLOBALS["hhh"]){
-            $title = "无法显示文章！";
-            $pid = "gf0";
-            $nr = "文章不存在";
-            $ll = 1;
-            $hf = 0;
-            $date = "现在";
-            
-            $name = "官方";
-            $head = "/resource/icons/gf.png";
-            $ht = "官方";
-        }
+
+        // 更新查看次数（原子操作）
+        $conn->query("UPDATE Passage SET see = see + 1 WHERE id = '$pid'");
+
+        // 赋值变量
+        $title = $row["title"];
+        $nr = $row["content"];
+        $ll = $row["see"] + 1;
+        $hf = $row["say"];
+        $date = $row["reg_date"];
+        $name = htmlspecialchars($row["name"] ?? '官方', ENT_QUOTES, 'UTF-8');
+        $head = htmlspecialchars($row["head"] ?? '/resource/icons/gf.png', ENT_QUOTES, 'UTF-8');
+        $ht = "默认";
     }
+
+    $stmt->close();
     $conn->close();
+
+} catch (Exception $e) {
+    // 记录错误日志
+    error_log($e->getMessage());
+    // 保留默认值显示错误信息
+}
+
+// 显示警告（如果需要）
+if ($showAlert) {
+    echo '<script>window.addEventListener("load", () => { alert("该文章可能存在违规字符") })</script>';
+}
 ?>
         <meta name="description" content="<?php echo $nr;?>">
         <title><?php echo $title." - ".$name;?></title>

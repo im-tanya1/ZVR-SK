@@ -6,6 +6,13 @@
 .wz *{
     user-select: text;
 }
+.wz br {
+    user-select: none;
+}
+.wzht img {
+    user-select: none;
+}
+
 .wzinfo{
     line-height: 2.5vh;
 }

@@ -1,42 +1,39 @@
 <?php
-    include '../../common.php';
-     
-    // 创建连接
-    $uid = $_GET["id"];
-    $conn = new mysqli($servername, $username, $password, $dbname);
-    // Check connection
-    if ($conn->connect_error) {
-        die("连接失败: " . $conn->connect_error);
-    } 
-     
-    $sql = "SELECT fromU, toU, content, reg_date FROM chat";
-    $result = $conn->query($sql);
-    
-    if ($result->num_rows > 0) {
-        // 输出数据
-        echo '[';
-        $times = 0;
-        while($row = $result->fetch_assoc()) {
-            if ($row["fromU"] == $uid) {
-                $times++;
-                if ($times != 1) {
-                    echo ',{"content": "'.$row["content"].'","time": "'.$row["reg_date"].'", "from": '.$row["fromU"].', "to": '.$row["toU"].'}'; 
-                }else{
-                    echo '{"content": "'.$row["content"].'","time": "'.$row["reg_date"].'", "from": '.$row["fromU"].', "to": '.$row["toU"].'}'; 
-                }
-            }
-            if ($row["toU"] == $uid) {
-                $times++;
-                if ($times != 1) {
-                    echo ',{"content": "'.$row["content"].'","time": "'.$row["reg_date"].'", "from": '.$row["fromU"].', "to": '.$row["toU"].'}'; 
-                }else{
-                    echo '{"content": "'.$row["content"].'","time": "'.$row["reg_date"].'", "from": '.$row["fromU"].', "to": '.$row["toU"].'}'; 
-                }
-            }
-        }
-        echo "]";
-    }else {
-        echo "[]";
-    }
-    $conn->close();
+include '../../common.php'; 
+
+if (!isset($_POST["address"], $_POST["title"], $_POST["elmi"], $_POST["content"], $_POST["id"], $_POST["wg"])) {
+    die(json_encode(array("code" => "400", "message" => "缺少必要的参数")));
+}
+
+$canvas = $_POST["address"];
+$title = $_POST["title"];
+$elmi = $_POST["elmi"];
+$content3 = $_POST["content"];
+$autherId = $_POST["id"]; 
+$wg = $_POST["wg"]; 
+
+$content2 = preg_replace('/<script>/', "", $content3);
+$content = preg_replace('/<\/script>/', "", $content2);
+
+$wgStatus = ($wg === "true") ? "存在违规字符" : "无违规";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+if ($conn->connect_error) {
+    die(json_encode(array("code" => "500", "message" => "数据库连接失败: " . $conn->connect_error)));
+}
+
+$stmt = $conn->prepare("INSERT INTO Passage (elmi, typeli, address, title, content, see, say, autherId, reg_date) VALUES (?, ?, ?, ?, ?, 0, 0, ?, NOW())");
+
+$elmiPrefix = "#page" . $elmi; 
+$stmt->bind_param("sssssi", $elmiPrefix, $wgStatus, $canvas, $title, $content, $autherId);
+
+if ($stmt->execute()) {
+    $last_id = $stmt->insert_id;
+    echo json_encode(array("code" => "200", "id" => $last_id));
+} else {
+    echo json_encode(array("code" => "500", "message" => "插入失败: " . $stmt->error));
+}
+
+$stmt->close();
+$conn->close();
 ?>

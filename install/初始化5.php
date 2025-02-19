@@ -13,6 +13,8 @@
         content VARCHAR(255) NOT NULL,
         fromU INT(6) NOT NULL,
         toU INT(6) NOT NULL,
+        isHide INT(1) DEFAULT '0',
+        isRead INT(1) DEFAULT '0',
         reg_date TIMESTAMP
         )";
         if (mysqli_query($conn, $sql)) {

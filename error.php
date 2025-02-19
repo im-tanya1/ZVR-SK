@@ -10,9 +10,10 @@
             $eb1 = $_SERVER['QUERY_STRING'];
             $err = explode(',', $eb1)[0];
             // $url = explode(',', $eb1)[1];
-            $url = "未知路径"
+            $url = "未知路径";
+            $err = "未知";
         ?>
-        <title>错误<?php echo $err;?> - ZVR神坑工作室</title>
+        <title>错误 - ZVR神坑工作室</title>
     </head>
     <body>
         <div class="goComeZZ">
@@ -22,10 +23,10 @@
         </div>
         <div class="hint">
             <span>
-                <img onclick="history.back()" style="position: absolute;left: 5px;top: 12.5px;" src="/resource/icons/back.png" alt=">" />
+                <img class="iii1" onclick="history.back()" src="/resource/icons/back.png" alt="" />
             </span>
            
-            <span>错误<?php echo $err;?></span>
+            <span class="tx">错误</span>
             <span>
                 <img style="visibility: hidden;position: absolute;right: 5px;top: 12.5px;" src="/resource/icons/back.png" alt="" />
             </span>
@@ -40,7 +41,7 @@
             <span style="color: var(--themeColor);">
                 <?php echo $err;?>
             </span>
-            错误码。根据此错误码，我们推断这通常是由于<span id="abj" style="color: var(--themeColor)"></span>。请稍后重试！
+            错误码。根据此错误码，我们推断这通常是由于 <span id="abj" style="color: var(--themeColor)"></span> 。请稍后重试！
         </div>
         
         <div style="position: absolute;width: 100%;top: 50%;">
@@ -49,7 +50,14 @@
             </div>
         </div>
         <script>
-            var ec = <?php echo $err;?>;
+            setInterval(() => {
+                hhj.innerText = Number(hhj.innerText) -1
+                if(hhj.innerText == 0){
+                    window.location.href = "/"
+                }
+            }, 1000)
+
+            var ec = <?php echo '"'.$err.'"';?>;
             function r(text){
                 abj.innerText = text;
             }
@@ -67,15 +75,8 @@
               case 401:
                 r("您没有获得授权")
               default:
-                r("其他原因");
+                r("未知原因");
             }
-        
-            setInterval(() => {
-                hhj.innerText = Number(hhj.innerText) -1
-                if(hhj.innerText == 0){
-                    window.location.href = "/"
-                }
-            }, 1000)
         </script>
         <script src="/resource/js/jquery.min.js"></script>
         <script src="/resource/js/Bottom-navigation-bar.php?9"></script>

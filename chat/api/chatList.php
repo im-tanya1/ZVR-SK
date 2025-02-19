@@ -1,49 +1,53 @@
 <?php
-    include '../../common.php';
-     
-    // 创建连接
-    $uid = $_GET["id"];
+include '../../common.php';
+
+// 验证参数有效性
+if (!isset($_GET["id"]) || !ctype_digit($_GET["id"])) {
+    echo json_encode([]);
+    exit;
+}
+
+$uid = (int)$_GET["id"];
+$partners = [];
+
+try {
     $conn = new mysqli($servername, $username, $password, $dbname);
-    // Check connection
     if ($conn->connect_error) {
-        die("连接失败: " . $conn->connect_error);
-    } 
-     
-    $sql = "SELECT fromU, toU FROM chat";
-    $result = $conn->query($sql);
-    
-    if ($result->num_rows > 0) {
-        // 输出数据
-        echo '[';
-        $times = 0;
-        $lists = [];
-        while($row = $result->fetch_assoc()) {
-            if ($row["fromU"] == $uid) {
-                $times++;
-                if (!in_array($row["toU"], $lists, false)) {
-                    if ($times != 1) {
-                        echo ",".$row["toU"]; 
-                    }else{
-                        echo $row["toU"]; 
-                    }
-                    $lists[] = $row["toU"];
-                }
-            }
-            if ($row["toU"] == $uid) {
-                $times++;
-                if (!in_array($row["toU"], $lists, false)) {
-                    if ($times != 1) {
-                        echo ",".$row["fromU"]; 
-                    }else{
-                        echo $row["fromU"]; 
-                    }
-                    $lists[] = $row["toU"];
-                }
-            }
-        }
-        echo "]";
-    } else {
-        echo "[]";
+        throw new Exception("连接失败: " . $conn->connect_error);
     }
+    
+    // 设置字符集
+    $conn->set_charset("utf8mb4");
+
+    // 使用预处理语句防止SQL注入
+    $stmt = $conn->prepare("
+        SELECT DISTINCT CASE
+            WHEN fromU = ? THEN toU
+            ELSE fromU
+        END AS partner_id
+        FROM chat
+        WHERE fromU = ? OR toU = ?
+        ORDER BY partner_id
+    ");
+    
+    if (!$stmt) {
+        throw new Exception("预处理失败: " . $conn->error);
+    }
+
+    $stmt->bind_param("iii", $uid, $uid, $uid);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    while ($row = $result->fetch_assoc()) {
+        $partners[] = (int)$row['partner_id'];
+    }
+
+    echo json_encode($partners, JSON_UNESCAPED_UNICODE);
+
+    $stmt->close();
     $conn->close();
+} catch (Exception $e) {
+    error_log($e->getMessage()); // 记录错误日志
+    echo json_encode([]);
+}
 ?>

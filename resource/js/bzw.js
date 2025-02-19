@@ -84,6 +84,33 @@ function logIn(n,p){
     })
 }
 
+script("/resource/js/fingerprint2.min.js")
+.then(() => {
+    const options = {
+        excludes: {
+            plugins: true, 
+            localStorage: true,
+            sessionStorage: true,
+            indexedDB: true
+        },
+        delay: 500          
+    };
+
+    Fingerprint2.get(options).then(components => {
+        const values = components.map(component => component.value);
+        const fingerprint = Fingerprint2.x64hash128(values.join(''), 31);
+        
+        console.log(fingerprint)
+    }).catch(error => {
+        return Promise.reject(error)
+    });
+})
+.catch((err) => {
+    console.log(err)
+})
+
+
+
 localStorage.setItem("Ucanvas", getCanvasFingerprint());
 function testUser(){
     const n = localStorage.getItem("Uname");

